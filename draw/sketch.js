@@ -1,16 +1,24 @@
 
 var drawing  = [];
 var currentPath = [];
+var isDrawing  = false;
 function setup() {
     canvas = createCanvas(1440, 750);
     canvas.mousePressed(startPath);
+    canvas.mouseReleased(endPath);
     canvas.parent('canvas-container');
 }
 
 function startPath() {
+    isDrawing = true
     currentPath = [];
     drawing.push(currentPath);
 }
+
+function endPath() {
+    isDrawing = false;
+}
+
 function keyPressed() {
     if (key==' ') {
         drawing = []
@@ -25,7 +33,7 @@ function draw() {
     text('DRAW', width/2-80, 40);
 
 
-    if (mouseIsPressed) {
+    if (isDrawing) {
         var point = {
             x: mouseX,
             y: mouseY

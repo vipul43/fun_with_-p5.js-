@@ -2,20 +2,12 @@
 
 var values = [];
 var flag = true;
-
+w = 7;
 
 function setup() {
     canvas = createCanvas(1200, 600);
     canvas.parent("canvas-container");
 
-    input = createInput();
-    input.parent("input-container");
-    input.changed(getWidthAndValues);
-}
-
-function getWidthAndValues() {
-    w = int(input.value());
-    values.splice(0, values.length);
     for (var i=0; i < width/w; i++) {
         values.push(random(height));
     }

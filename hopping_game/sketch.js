@@ -7,19 +7,25 @@ let obstacles = [];
 let soundClassifier;
 let score=0;
 
+let toggle=false;
+
 function preload() {
     // dImg = loadImage('dino.png');
     // oImg = loadImage('cactus.jpg');
     // bImg = loadImage('dino_background.jpg');
-    const options = { probabilityThreshold: 0.90 };
+    const options = { probabilityThreshold: 0.95 };
     soundClassifier=ml5.soundClassifier('SpeechCommands18w');
 }
-
 function setup() {
+    resetSketch();
+}
+function resetSketch(){
     canvas = createCanvas(1200, 600);
     canvas.parent("canvas-container");
     dino = new Dino();
     soundClassifier.classify(gotCommand);
+    obstacles.splice(0, obstacles.length);
+    score=0;
 }
 function gotCommand(error, results) {
     if(error){
@@ -46,6 +52,17 @@ function keyPressed() {
     if(keyCode==RIGHT_ARROW){
         dino.moveRight();
     }
+    if(keyCode==UP_ARROW && !toggle){
+        noLoop();
+        toggle=true;
+    }
+    if(keyCode==UP_ARROW && toggle){
+        loop();
+        toggle=false;
+    }
+    if(keyCode==DOWN_ARROW){
+        resetSketch();
+    }
 }
 function displayGameOverScreen() {
     textSize(128);
@@ -65,7 +82,7 @@ function updateScore(obstacle, dino){
     }
 }
 function draw() {
-    if(random(1)<0.005){
+    if(random(1)<0.01){
         obstacles.push(new Obstacle());
     }
     background(220);
